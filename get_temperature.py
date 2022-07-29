@@ -2,6 +2,9 @@ import json
 import requests
 from datetime import datetime
 from time import sleep
+import logger
+
+logger_temp = logger.Logger()
 
 def get_temp(city):
     url = "https://yahoo-weather5.p.rapidapi.com/weather"
@@ -17,8 +20,8 @@ def get_temp(city):
     r = requests.get(url, headers=headers, params=querystring)
     data = dict(eval(r.text))
     # write to file to test
-    with open('temp_weather.json', 'w+') as file:
-         json.dump(data, file)
+    logger_temp.write_to_json(data)
+
     temp_far = data['current_observation']['condition']['temperature']
     temp_cel = int((temp_far - 32) * (5 / 9))
 
